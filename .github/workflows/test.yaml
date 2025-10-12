@@ -13,10 +13,7 @@ jobs:
 
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.24'
-
-      - name: run code generator
-        run: make generate
+          go-version: '1.25'
 
       - name: build binary
         run: make build
