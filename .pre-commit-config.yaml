@@ -1,0 +1,8 @@
+---
+repos:
+  - repo: https://github.com/soerenschneider/pre-commit-hooks
+    rev: v1.5.2
+    hooks:
+      - id: go-fmt
+      - id: golangci-lint
+      - id: yamllint
