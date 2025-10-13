@@ -21,7 +21,7 @@ COPY . /unrest
 
 RUN CGO_ENABLED=0 go build restic_restore.go
 
-FROM alpine:3.22.1
+FROM alpine:3.22.2
 
 ARG USERNAME=restic
 ARG USER_UID=16523
