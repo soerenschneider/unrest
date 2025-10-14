@@ -1,4 +1,4 @@
-FROM golang:1.25.1 AS restic
+FROM golang:1.25.3 AS restic
 
 # renovate: datasource=github-releases depName=restic/restic
 ARG RESTIC_VERSION=v0.18.1
@@ -11,7 +11,7 @@ RUN apt update && \
 WORKDIR /restic
 RUN CGO_ENABLED=0 go run helpers/build-release-binaries/main.go -p linux/amd64 --skip-compress
 
-FROM golang:1.25.1 AS unrest
+FROM golang:1.25.3 AS unrest
 
 COPY go.mod go.sum /unrest/
 WORKDIR /unrest
