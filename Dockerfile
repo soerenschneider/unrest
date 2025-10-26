@@ -11,6 +11,11 @@ RUN apt update && \
 WORKDIR /restic
 RUN CGO_ENABLED=0 go run helpers/build-release-binaries/main.go -p linux/amd64 --skip-compress
 
+FROM golang:1.25.1 AS resticprofile
+# renovate: datasource=github-releases depName=creativeprojects/resticprofile
+ARG RESTICPROFILE_VERSION=v0.32.0
+RUN CGO_ENABLED=0 go install github.com/creativeprojects/resticprofile@${RESTICPROFILE_VERSION}
+
 FROM golang:1.25.1 AS unrest
 
 COPY go.mod go.sum /unrest/
@@ -34,4 +39,5 @@ RUN addgroup --gid "$USER_GID" "$USERNAME" && \
 RUN apk add --no-cache gzip mariadb-client postgresql${POSTGRES_MAJOR}-client sqlite
 
 COPY --from=restic /output/restic_linux_amd64 /usr/local/bin/restic
+COPY --from=resticprofile /go/bin/resticprofile /usr/local/bin/resticprofile
 COPY --from=unrest /unrest/restic_restore /usr/bin/restic_restore
