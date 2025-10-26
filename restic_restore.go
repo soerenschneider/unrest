@@ -488,9 +488,7 @@ func (a *unrest) getBackupRestoreTarget(_ context.Context) (RestoreTarget, error
 			target: a.cfg.Filesystem,
 		}, nil
 	case targetSqlite:
-		return &SqliteTarget{
-			target: a.cfg.Sqlite,
-		}, nil
+		return NewSqliteTarget(a.cfg.Sqlite)
 	case targetMariaDb:
 		return &MariaDBTarget{
 			connectionInfo: a.cfg.Mariadb,
@@ -540,12 +538,29 @@ func (t *FilesystemTarget) restore(ctx context.Context, snapshot ResticSnapshot,
 }
 
 type SqliteTarget struct {
-	target SqliteConnection
+	target    SqliteConnection
+	sqliteCmd string
+}
+
+func NewSqliteTarget(target SqliteConnection) (*SqliteTarget, error) {
+	sqliteCmd := "sqlite"
+	if _, err := exec.LookPath("sqlite"); err != nil {
+		if _, err := exec.LookPath("sqlite3"); err == nil {
+			sqliteCmd = "sqlite3"
+		} else {
+			return nil, errors.New("neither binary 'sqlite' nor 'sqlite3' is installed")
+		}
+	}
+
+	return &SqliteTarget{
+		target:    target,
+		sqliteCmd: sqliteCmd,
+	}, nil
 }
 
 func (t *SqliteTarget) restore(ctx context.Context, snapshot ResticSnapshot, resticOpts ResticRestoreRequest) error {
 	//nolint G204
-	var sqliteCmd = exec.Command("sqlite", t.target.DatabasePath)
+	var sqliteCmd = exec.Command(t.sqliteCmd, t.target.DatabasePath)
 	return pipeCommand(ctx, snapshot, resticOpts, sqliteCmd)
 }
 
