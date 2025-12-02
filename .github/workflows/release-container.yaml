@@ -29,7 +29,7 @@ jobs:
           package-name: ${{ github.repository }}
 
       - name: Checkout
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v5.0.1
         if: ${{ steps.release.outputs.release_created }}
 
       - name: Log in to the container registry
@@ -42,7 +42,7 @@ jobs:
 
       - name: Extract metadata for container
         id: meta
-        uses: docker/metadata-action@v5.9.0
+        uses: docker/metadata-action@v5.10.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
