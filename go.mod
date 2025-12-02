@@ -4,7 +4,7 @@ go 1.25.0
 
 require (
 	github.com/charmbracelet/huh v0.8.0
-	github.com/charmbracelet/huh/spinner v0.0.0-20251005153135-a01a1e304532
+	github.com/charmbracelet/huh/spinner v0.0.0-20251124111010-6575a6e28cb3
 	github.com/go-playground/validator/v10 v10.28.0
 )
 
