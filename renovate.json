@@ -11,15 +11,24 @@
       "managers": ["gomod"],
       "commitMessagePrefix": "fix(deps): ",
       "postUpdateOptions": ["gomodTidy"]
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "Docker Updates",
+      "automerge": true
     }
   ],
-  "regexManagers": [
+  "customManagers": [
     {
-        "fileMatch": [".*y[a]?ml$"],
-        "matchStrings": [
-            "#\\srenovate:\\sdatasource=(?<datasource>docker)( versioning=(?<versioning>.*?))?\\s.+_image: \"(?<depName>.*?):(?<currentValue>.*)\"",
-            "(?i)#\\s+renovate:\\s+datasource=(?<datasource>.*?) depName=(?<depName>.*?)(\\s+versioning=(?<versioning>.*?))?\\s+.*_version[=:]\\s*(?<currentValue>.*)"
-        ]
+      "customType": "regex",
+      "fileMatch": [
+        "(^|/|\\.)([Dd]ocker|[Cc]ontainer)file$",
+        "(^|/)([Dd]ocker|[Cc]ontainer)file[^/]*$"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-.]+?) depName=(?<depName>[^\\s]+?)(?: (lookupName|packageName)=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?(?: registryUrl=(?<registryUrl>[^\\s]+?))?\\s(?:ENV|ARG) .+?_VERSION[ =]\"?(?<currentValue>.+?)\"?\\s"
+      ]
     }
   ]
 }
