@@ -13,7 +13,7 @@ RUN CGO_ENABLED=0 go run helpers/build-release-binaries/main.go -p linux/amd64 -
 
 FROM golang:1.26.2 AS resticprofile
 # renovate: datasource=github-releases depName=creativeprojects/resticprofile
-ARG RESTICPROFILE_VERSION=v0.32.0
+ARG RESTICPROFILE_VERSION=v0.33.1
 RUN CGO_ENABLED=0 go install github.com/creativeprojects/resticprofile@${RESTICPROFILE_VERSION}
 
 FROM golang:1.26.2 AS unrest
