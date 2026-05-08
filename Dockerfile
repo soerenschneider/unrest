@@ -1,4 +1,4 @@
-FROM golang:1.26.2 AS restic
+FROM golang:1.26.3 AS restic
 
 # renovate: datasource=github-releases depName=restic/restic
 ARG RESTIC_VERSION=v0.18.1
@@ -11,12 +11,12 @@ RUN apt update && \
 WORKDIR /restic
 RUN CGO_ENABLED=0 go run helpers/build-release-binaries/main.go -p linux/amd64 --skip-compress
 
-FROM golang:1.26.2 AS resticprofile
+FROM golang:1.26.3 AS resticprofile
 # renovate: datasource=github-releases depName=creativeprojects/resticprofile
 ARG RESTICPROFILE_VERSION=v0.33.1
 RUN CGO_ENABLED=0 go install github.com/creativeprojects/resticprofile@${RESTICPROFILE_VERSION}
 
-FROM golang:1.26.2 AS unrest
+FROM golang:1.26.3 AS unrest
 
 COPY go.mod go.sum /unrest/
 WORKDIR /unrest
@@ -26,7 +26,7 @@ COPY . /unrest
 
 RUN CGO_ENABLED=0 go build restic_restore.go
 
-FROM alpine:3.22.2
+FROM alpine:3.23.4
 
 ARG USERNAME=restic
 ARG USER_UID=16523
