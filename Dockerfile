@@ -1,7 +1,7 @@
 FROM golang:1.26.2 AS restic
 
 # renovate: datasource=github-releases depName=restic/restic
-ARG RESTIC_VERSION=v0.18.1
+ARG RESTIC_VERSION=v0.19.1
 
 RUN apt update && \
     apt -y install git && \
